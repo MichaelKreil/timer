@@ -71,7 +71,7 @@
 			var xc = w/2;
 
 			if (time > duration) {
-				xc += r*Math.sin((time-duration)*3.14159*2*10)*Math.max(2-time+duration,0)*0.03;
+				xc += r*Math.sin((time-duration)*3.14159*2*8)*Math.max(2-time+duration,0)*0.1;
 			}
 
 			var yc = h/2;
@@ -108,14 +108,14 @@
 			];
 
 			var colors = [
-				[191,   0,   0],
-				[191, 127,  64],
-				[191, 127,  64],
-				[191, 127,  64],
-				[191, 127,  64],
+				[255,   0,   0],
+				[255, 127,  64],
+				[255, 127,  64],
+				[255, 127,  64],
+				[255, 127,  64],
 				[ 64,  64, 191]
 			];
-			var a = Math.max(Math.min(colors.length-1, duration-time), 0);
+			var a = Math.max(Math.min(colors.length-1, (duration-time)/6), 0);
 			var i = Math.min(colors.length-2, Math.floor(a));
 			a = a - i;
 			var color = [
@@ -129,10 +129,13 @@
 			clock.setAttribute('visibility', 'visible');
 
 			number.setAttribute('x', xc);
-			number.setAttribute('y', yc+r*0.29);
-			number.setAttribute('font-size', r*0.8);
-			var t = Math.ceil(Math.max(0,duration-time));
-			number.textContent = t.toFixed(0);
+			number.setAttribute('y', yc+r*0.2);
+			number.setAttribute('font-size', r*0.6);
+
+			var sekunde = Math.ceil(Math.max(0,duration-time));
+			var minute = Math.floor(sekunde/60);
+			sekunde = sekunde - minute*60;
+			number.textContent = minute.toFixed(0) + ':' + (sekunde+100).toFixed(0).substr(1);
 
 		}
 	</script>
@@ -181,7 +184,7 @@
 		<path id="clock" d="" fill="#88F" stroke="none" />
 		<text x="0" y="0" id="number" fill="#fff" opacity="0.1" stroke="none" font-family="Helvetica" font-size="0" text-anchor="middle">3X0</text>
 	</svg>
-	<input type="text" placeholder="Wieviele Sekunden?" size="3" value="10" id="duration" />
+	<input type="text" placeholder="Wieviele Sekunden?" size="3" value="180" id="duration" />
 	<button onclick="switchTimer()" id="button">Start</button>
 </body>
 </html>
