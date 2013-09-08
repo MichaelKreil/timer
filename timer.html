@@ -1,5 +1,7 @@
 <html>
 <head>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width">
 	<script>
 		var element;
 		var startTime;
@@ -135,6 +137,11 @@
 		}
 	</script>
 	<style type="text/css">
+		html {
+			margin: 0;
+			padding: 0;
+			position: relative;
+ 		}
 		body {
 			margin: 0;
 		}
@@ -155,8 +162,8 @@
 			position: absolute;
 			top: 0px;
 			left: 0px;
-			right: 0px;
-			bottom: 0px;
+ 			width: 100%;
+ 			height: 100%;
 		}
 		#timer button {
 			position: absolute;
@@ -167,7 +174,6 @@
 		}
 	</style>
 </head>
-<body onload="init()" style="width:100%;height:100%" class="showinit">
 	<div id="init" class="popup">
 		<input type="text" placeholder="Wieviele Sekunden?" value="30" size="3" id="duration" />
 	</div>
@@ -179,5 +185,6 @@
 		</svg>
 		<button onclick="switchTimer()" id="button">Start</button>
 	</div>
+<body onload="init()">
 </body>
 </html>
