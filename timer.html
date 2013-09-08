@@ -1,0 +1,183 @@
+<html>
+<head>
+	<script>
+		var element;
+		var startTime;
+		var duration;
+		var interval;
+		var time = 0;
+		
+		function init() {
+			element = document.getElementById('timer');
+			draw(-1,0);
+		}
+
+		function switchTimer() {
+			if (interval) {
+				stop();
+			} else {
+				start();
+			}
+		}
+
+		function start() {
+
+			duration = parseFloat(document.getElementById('duration').value);
+
+			stop();
+			var button = document.getElementById('button');
+			button.innerText = 'Stop';
+			button.focus();
+
+			startTime = (new Date()).getTime();
+			interval = setInterval(step, 10);
+			step();
+		}
+
+		function stop() {
+			var button = document.getElementById('button');
+			button.innerText = 'Start';
+			button.focus();
+
+			if (interval) {
+				clearInterval(interval);
+				interval = false;
+			}
+			if (time < duration) {
+				draw(-1, 0);
+			} else {
+				draw(duration, duration);
+			}
+		}
+
+		function step() {
+			time = (new Date()).getTime();
+			time = (time - startTime)/1000;
+			if (time >= duration+2) {
+				stop();
+			} else {
+				draw(time, duration);
+			}
+		}
+
+		function draw(time, duration) {
+			var svg = document.getElementById('svg');
+			var w = svg.offsetWidth;
+			var h = svg.offsetHeight;
+			var s = Math.min(w,h);
+			var r = s*0.4;
+			var xc = w/2;
+
+			if (time > duration) {
+				xc += r*Math.sin((time-duration)*3.14159*2*10)*Math.max(2-time+duration,0)*0.03;
+			}
+
+			var yc = h/2;
+			var part = Math.min(1, time/duration);
+			var a = part*2*3.14159;
+			var x1 = xc + r*Math.sin(a);
+			var y1 = yc - r*Math.cos(a);
+
+
+			var circle = document.getElementById('circle');
+			var clock = document.getElementById('clock');
+			var number = document.getElementById('number');
+
+			circle.setAttribute('cx', xc);
+			circle.setAttribute('cy', yc);
+			circle.setAttribute('r', r);
+
+			if (time < 0) {
+				clock.setAttribute('visibility', 'hidden');
+				number.textContent = '';
+				return;
+			}
+
+			var path = [
+				'M'+xc,
+				yc+'L'+xc,
+				(yc-r)+'A'+r,
+				r,
+				0,
+				part < 0.5 ? 0 : 1,
+				1,
+				x1,
+				y1+'Z'
+			];
+
+			var colors = [
+				[230,   0,   0],
+				[230, 170,  64],
+				[230, 170,  64],
+				[230, 170,  64],
+				[230, 170,  64],
+				[170, 170, 255]
+			];
+			var a = Math.max(Math.min(colors.length-1, duration-time), 0);
+			var i = Math.min(colors.length-2, Math.floor(a));
+			a = a - i;
+			var color = [
+				Math.round(colors[i][0]*(1-a) + colors[i+1][0]*a),
+				Math.round(colors[i][1]*(1-a) + colors[i+1][1]*a),
+				Math.round(colors[i][2]*(1-a) + colors[i+1][2]*a)
+			];
+			color = 'rgb('+color.join(',')+')';
+			clock.setAttribute('d', path.join(','));
+			clock.setAttribute('fill', color);
+			clock.setAttribute('visibility', 'visible');
+
+			number.setAttribute('x', xc);
+			number.setAttribute('y', yc+r*0.29);
+			number.setAttribute('font-size', r*0.8);
+			var t = Math.ceil(Math.max(0,duration-time));
+			number.textContent = t.toFixed(0);
+
+		}
+	</script>
+	<style type="text/css">
+		body {
+			margin: 0;
+		}
+ 		.popup {
+ 			text-align: center;
+ 			width: 100%;
+ 			height: 100%;
+ 		}
+		#init input {
+			font-size: 50px;
+ 			margin-top: 30%;
+ 			text-align: right;
+		}
+		#timer {
+			position: relative;
+		}
+		#svg {
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			right: 0px;
+			bottom: 0px;
+		}
+		#timer button {
+			position: absolute;
+			left: 0px;
+			bottom: 0px;
+			font-size: 20px;
+			opacity: 0.2;
+		}
+	</style>
+</head>
+<body onload="init()" style="width:100%;height:100%" class="showinit">
+	<div id="init" class="popup">
+		<input type="text" placeholder="Wieviele Sekunden?" value="30" size="3" id="duration" />
+	</div>
+	<div id="timer" class="popup">
+		<svg id="svg">
+			<circle id="circle" cx="100" cy="100" r="100" fill="#eee" stroke="none" />
+			<path id="clock" d="M100,100L100,0A100,100,0,0,1,200,100Z" fill="#88F" stroke="none" />
+			<text x="0" y="0" id="number" fill="#000" opacity="0.2" stroke="none" font-family="Helvetica" font-size="0" text-anchor="middle">3X0</text>
+		</svg>
+		<button onclick="switchTimer()" id="button">Start</button>
+	</div>
+</body>
+</html>
