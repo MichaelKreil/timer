@@ -144,20 +144,11 @@
  		}
 		body {
 			margin: 0;
-		}
- 		.popup {
- 			text-align: center;
+			padding: 0;
  			width: 100%;
  			height: 100%;
- 		}
-		#init input {
-			font-size: 50px;
- 			margin-top: 30%;
- 			text-align: right;
-		}
-		#timer {
 			position: relative;
-		}
+ 		}
 		#svg {
 			position: absolute;
 			top: 0px;
@@ -165,26 +156,31 @@
  			width: 100%;
  			height: 100%;
 		}
-		#timer button {
+		input {
 			position: absolute;
 			left: 0px;
+			bottom: 0px;
+			font-size: 12px;
+ 			margin-top: 30%;
+ 			text-align: right;
+			opacity: 0.2;
+		}
+		button {
+			position: absolute;
+			right: 0px;
 			bottom: 0px;
 			font-size: 20px;
 			opacity: 0.2;
 		}
 	</style>
 </head>
-	<div id="init" class="popup">
-		<input type="text" placeholder="Wieviele Sekunden?" value="30" size="3" id="duration" />
-	</div>
-	<div id="timer" class="popup">
-		<svg id="svg">
-			<circle id="circle" cx="100" cy="100" r="100" fill="#eee" stroke="none" />
-			<path id="clock" d="M100,100L100,0A100,100,0,0,1,200,100Z" fill="#88F" stroke="none" />
-			<text x="0" y="0" id="number" fill="#000" opacity="0.2" stroke="none" font-family="Helvetica" font-size="0" text-anchor="middle">3X0</text>
-		</svg>
-		<button onclick="switchTimer()" id="button">Start</button>
-	</div>
 <body onload="init()">
+	<svg id="svg">
+		<circle id="circle" cx="100" cy="100" r="0" fill="#444" stroke="none" />
+		<path id="clock" d="" fill="#88F" stroke="none" />
+		<text x="0" y="0" id="number" fill="#fff" opacity="0.1" stroke="none" font-family="Helvetica" font-size="0" text-anchor="middle">3X0</text>
+	</svg>
+	<input type="text" placeholder="Wieviele Sekunden?" size="3" value="10" id="duration" />
+	<button onclick="switchTimer()" id="button">Start</button>
 </body>
 </html>
